@@ -45,6 +45,7 @@ console.log(fucn(10)(2)()("-")); // так работает, пропускае�
 let string = "one.two.three.foru";
 function makeDeepObject(str) {
   const objectNames = str.split(".");
+  const regex = /[^a-zA-Z$_]/;
   let globalObject = {};
   let currentObject = globalObject;
   for (let i = 0; i < objectNames.length; i++) {
@@ -52,6 +53,8 @@ function makeDeepObject(str) {
     if (objectNames[i] === "") continue;
     if (objectNames[i][0] >= "0" && objectNames[i][0] <= "9") {
       throw new Error("Имя свойства не может начинаться с цифры");
+    } else if (regex.test(objectNames[i][0]) || /[:]/.test(objectNames[i])) {
+      throw new Error("Имя начинается с недопустимого символа или содержит недопустимый символ");
     }
     let name = objectNames[i];
     currentObject[name] = {};
